@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Profil</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff3b2f;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HI</h1>
+        <form id="profileForm">
+            <!-- Nama -->
+            <label for="nama">Nama Kamu:</label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan nama kamu" required>
+            <!-- Umur -->
+            <label for="umur">Umur Kamu:</label>
+            <input type="number" id="umur" name="umur" placeholder="Contoh: 15" required>
+            <!-- Hobi -->
+            <label for="hobi">Hobi Kamu:</label>
+            <textarea id="hobi" name="hobi" rows="3" placeholder="Ceritakan hobimu..."></textarea>
+            <!-- Makanan Favorit -->
+            <label for="makanan-favorit">Makanan Favorit:</label>
+            <select id="makanan-favorit" name="makanan-favorit">
+                <option value="" disabled selected>Pilih makanan favoritmu</option>
+                <option value="nasi-goreng">Nasi Goreng</option>
+                <option value="bakso">Bakso</option>
+                <option value="seblak">Seblak</option>
+                <option value="mie-instan">Mie-instan</option>
+                <option value="lainnya">Lainnya</option>
+            </select>
+            <!-- Love Language -->
+            <label for="love-language">Love Language:</label>
+            <select id="love-language" name="love-language">
+                <option value="" disabled selected>Pilih love language-mu</option>
+                <option value="kata-kata">Kata-Kata Penyemangat</option>
+                <option value="waktu-berkualitas">Waktu Berkualitas</option>
+                <option value="hadiah">Hadiah</option>
+                <option value="pelayanan">Tindakan Pelayanan</option>
+                <option value="sentuhan-fisik">Sentuhan Fisik</option>
+            </select>
+            <!-- Submit Button -->
+            <button type="submit">Kirim</button>
+        </form>
+        <div class="footer">
+            Terima kasih telah mengisi
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('profileForm');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah pengiriman formulir default
+
+            // Mengambil nilai dari formulir
+            const nama = document.getElementById('nama').value;
+            const umur = document.getElementById('umur').value;
+            const hobi = document.getElementById('hobi').value;
+            const makananFavorit = document.getElementById('makanan-favorit').value;
+            const loveLanguage = document.getElementById('love-language').value;
+
+            // Format pesan untuk dikirim ke Telegram
+            const message = `
+Nama: ${nama}
+Umur: ${umur}
+Hobi: ${hobi}
+Makanan Favorit: ${makananFavorit}
+Love Language: ${loveLanguage}
+            `.trim();
+
+            // Konfigurasi Telegram Bot API
+            const botToken = '7710302504:AAGThDT47h_YW1FhIxT4_CwiPyzdv-6FL-8'; // Ganti dengan token bot Anda
+            const chatId = '6480274724'; // Ganti dengan Chat ID Anda
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            // Kirim data ke Telegram menggunakan Fetch API
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                }),
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error:', error); // Hanya mencatat kesalahan di konsol
+            });
+        });
+    </script>
+</body>
+</html>
